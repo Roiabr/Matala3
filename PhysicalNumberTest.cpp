@@ -80,40 +80,7 @@ int main() {
     .CHECK_OUTPUT(b4-b1, "0.0994444444[hour]")                     //0.1[hour] - 2[sec]
     .CHECK_OUTPUT(b3-b2, "3.95[hour]")                             //4[hour] - 3[min]
 
-    .setname("Operator '+' binary - Compatible dimensions")
-    .CHECK_OUTPUT(a1+a2, "300002[cm]")                             //2[cm] + 3[km]
-    .CHECK_OUTPUT(a1+a3, "402[cm]")                                //2[cm] + 4[m]
-    .CHECK_OUTPUT(a1+a4, "10002[cm]")                              //2[cm] + 0.1[km]
-    .CHECK_OUTPUT(a2+a1, "3.00002[km]")                            //3[km] + 2[cm]
-    .CHECK_OUTPUT(b1+b2, "182[sec]")                               //2[sec] + 3[min]
-    .CHECK_OUTPUT(b1+b3, "14402[sec]")                             //2[sec] + 4[hour]
-    .CHECK_OUTPUT(b1+b4, "362[sec]")                               //2[sec] + 0.1[hour]
-    .CHECK_OUTPUT(b3+b2, "4.05[hour]")                             //4[hour] + 3[min]
-    .CHECK_OUTPUT(c1+c2, "3002[g]")                                //2[g] + 3[kg]
-    .CHECK_OUTPUT(c1+c3, "4000002[g]")                             //2[g] + 4[ton]
-    .CHECK_OUTPUT(c1+c4, "100002[g]")                              //2[g] + 0.1[ton]
-    .CHECK_OUTPUT(c2+c1, "3.002[kg]")    
-
-     .setname("Operator '-' binary - Incompatible dimensions")
-    .CHECK_THROWS(a1-b1)
-    .CHECK_THROWS(b1-c1)
-    .CHECK_THROWS(c1-a1)
-    .CHECK_THROWS(a2-c2)
-
-
-    .setname("Operator '+=' binary - Compatible dimensions")
-    .CHECK_OUTPUT((a1+=a2), "300002[cm]")                             //a1 = 2[cm] + 3[km]
-    .CHECK_OUTPUT((b1+=b3), "14402[sec]")                             //b1 = 2[sec] + 4[hour]
-    .CHECK_OUTPUT((b3+=b2), "4.05[hour]")                             //b3 = 4[hour] + 3[min]
-    .CHECK_OUTPUT((c1+=c4), "100002[g]")                              //c1 = 2[g] + 0.1[ton]
-    .CHECK_OUTPUT((c2+=c2), "6[kg]")                                  //c2 = 3[kg] + 3[kg]
-
-
-    .setname("Operator '+=' binary - Incompatible dimensions")
-    .CHECK_THROWS(a1+=b1)
-    .CHECK_THROWS(b1+=c1)
-    .CHECK_THROWS(c1+=a1)
-    .CHECK_THROWS(a2+=c2)
+   
     .setname("...")
 
       .print(cout, /*show_grade=*/false);
