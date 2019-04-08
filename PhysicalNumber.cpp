@@ -4,7 +4,7 @@ using namespace ariel;
 using namespace std;
 
 
-PhysicalNumber::PhysicalNumber (int a,Unit unit){
+PhysicalNumber::PhysicalNumber (double a,Unit unit){
 	this->a=a;
 	this->u=unit;
 }
