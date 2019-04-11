@@ -4,7 +4,7 @@ using namespace ariel;
 using namespace std;
 
 
-PhysicalNumber::PhysicalNumber (double a,Unit unit){
+PhysicalNumber::PhysicalNumber (long double a,Unit unit){
 	this->num=a;
 	this->unit=unit;
 }
@@ -268,13 +268,17 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
             if((int)other.getType() == 7){
                 other.setValue(other.getValue()*(60*60));
             }
-            
             break;
         case 4:
-            if((int)other.getType() == 1)
-                other.setValue(other.getValue()/60);
+            if((int)other.getType() == 1){
+                other.setValue(other.getValue()*60);
+            }
             if((int)other.getType() == 7){
                 other.setValue(other.getValue()*60);
+            }
+            if((int)other.getType() == 4)
+            {
+                return;
             }
             
         case 7:
@@ -282,6 +286,10 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
                 other.setValue(other.getValue()/(60*60));
             if((int)other.getType() == 4){
                 other.setValue(other.getValue()/60);
+            }
+            if((int)other.getType() == 7)
+            {
+                return;
             }
             
     }
@@ -297,14 +305,22 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
             if((int)other.getType() == 8){
                 other.setValue(other.getValue()*1000*1000);
             }
+            if((int)other.getType() == 2)
+            {
+                return;
+            }
           
 
             break;
         case 5:
             if((int)other.getType() == 2)
-                other.setValue(other.getValue()/1000);
+                other.setValue(other.getValue()/(1000));
             if((int)other.getType() == 8){
                 other.setValue(other.getValue()*1000);
+            }
+            if((int)other.getType() == 5)
+            {
+                return;
             }
  
         case 8:
@@ -312,6 +328,10 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
                 other.setValue(other.getValue()/(1000*1000));
             if((int)other.getType() == 5){
                 other.setValue(other.getValue()/1000);
+            }
+            if((int)other.getType() == 8)
+            {
+                return;
             }
             
     }
