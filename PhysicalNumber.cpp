@@ -268,6 +268,7 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
             if((int)other.getType() == 7){
                 other.setValue(other.getValue()*(60*60));
             }
+            
             break;
         case 4:
             if((int)other.getType() == 1)
@@ -275,12 +276,14 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
             if((int)other.getType() == 7){
                 other.setValue(other.getValue()*60);
             }
+            
         case 7:
             if((int)other.getType() == 1)
                 other.setValue(other.getValue()/(60*60));
             if((int)other.getType() == 4){
                 other.setValue(other.getValue()/60);
             }
+            
     }
 
 }
@@ -292,8 +295,10 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
             if((int)other.getType() == 5)
                 other.setValue(other.getValue()*1000);
             if((int)other.getType() == 8){
-                other.setValue(other.getValue()*(1000*1000));
+                other.setValue(other.getValue()*1000*1000);
             }
+          
+
             break;
         case 5:
             if((int)other.getType() == 2)
@@ -301,12 +306,14 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
             if((int)other.getType() == 8){
                 other.setValue(other.getValue()*1000);
             }
+ 
         case 8:
             if((int)other.getType() == 2)
                 other.setValue(other.getValue()/(1000*1000));
             if((int)other.getType() == 5){
                 other.setValue(other.getValue()/1000);
             }
+            
     }
 
 }
