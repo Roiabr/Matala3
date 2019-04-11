@@ -239,11 +239,14 @@ void PhysicalNumber::convDis (int cases, PhysicalNumber& other) const
             }
             break;
         case 3://if this is M
-            if((int)other.getType() == 0)// other type is CM
-                other.setValue(other.getValue()/100);
-            if((int)other.getType() == 6){// other type is KM
-                other.setValue(other.getValue()*1000);
-            }
+            if((int)other.getType()== 0){
+			    other.setValue(other.getValue()/100);
+		    }
+		    if((int)other.getType()== 6){
+			    other.setValue(other.getValue()*1000);
+		    }
+        break; 
+        
         case 6:
             if((int)other.getType() == 0)
                 other.setValue(other.getValue()/(100000));
