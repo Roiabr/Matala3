@@ -49,7 +49,8 @@ bool operator>=(const PhysicalNumber& PHnum);
 bool operator>(const PhysicalNumber& PHnum);
 bool operator<(const PhysicalNumber& PHnum);
 
-
+PhysicalNumber& operator++ ();
+PhysicalNumber& operator-- ();
 const PhysicalNumber operator++ (int);
 const PhysicalNumber operator-- (int);
 

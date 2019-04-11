@@ -122,16 +122,24 @@ bool PhysicalNumber::operator<(const PhysicalNumber& PHnum){
 }
 
 
+PhysicalNumber& PhysicalNumber::operator++(){
+   this->num++;
+   return *this;
+}
+PhysicalNumber& PhysicalNumber::operator--(){
+    this->num--;
+    return *this;
+}
 const PhysicalNumber PhysicalNumber::operator++(int)
 {
-   PhysicalNumber cpy = *this;
+   PhysicalNumber copy = *this;
     this->num++;
-    return cpy;
+    return copy;
 }
  const PhysicalNumber PhysicalNumber::operator--(int){
-    PhysicalNumber cpy = *this;
+    PhysicalNumber copy = *this;
     this->num--;
-    return cpy;
+    return copy;
 }
 
 //friends functions:
