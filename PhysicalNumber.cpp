@@ -122,11 +122,16 @@ bool PhysicalNumber::operator<(const PhysicalNumber& PHnum){
 }
 
 
-PhysicalNumber& PhysicalNumber::operator++(){
-    return *this;
+const PhysicalNumber PhysicalNumber::operator++(int)
+{
+   PhysicalNumber cpy = *this;
+    this->num++;
+    return cpy;
 }
-PhysicalNumber& PhysicalNumber::operator--(){
-    return *this;
+ const PhysicalNumber PhysicalNumber::operator--(int){
+    PhysicalNumber cpy = *this;
+    this->num--;
+    return cpy;
 }
 
 //friends functions:
@@ -225,10 +230,10 @@ void PhysicalNumber::convDis (int cases, PhysicalNumber& other) const
                 other.setValue(other.getValue()*100000);
             }
             break;
-        case 3:
-            if((int)other.getType() == 0)
+        case 3://if this is M
+            if((int)other.getType() == 0)// other type is CM
                 other.setValue(other.getValue()/100);
-            if((int)other.getType() == 6){
+            if((int)other.getType() == 6){// other type is KM
                 other.setValue(other.getValue()*1000);
             }
         case 6:
