@@ -7,7 +7,7 @@ namespace ariel{
 class PhysicalNumber{
 private:
 Unit unit;
-long double num;
+double num;
 void convDis(int cases ,PhysicalNumber& other) const;
 void convTime(int cases ,PhysicalNumber& other) const;
 void convWig(int cases, PhysicalNumber& other) const;
@@ -15,11 +15,11 @@ void convertByType(PhysicalNumber& other) const;
 
 public:
 //constructor
-PhysicalNumber (long double a,Unit unit);
+PhysicalNumber (double a,Unit unit);
 //copy constructor
 PhysicalNumber (const PhysicalNumber& obj);
 
-void setValue(long double d){ //setter
+void setValue(double d){ //setter
 		this->num = d;
 }
 double getValue() const { //getter

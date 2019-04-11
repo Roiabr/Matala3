@@ -4,7 +4,7 @@ using namespace ariel;
 using namespace std;
 
 
-PhysicalNumber::PhysicalNumber (long double a,Unit unit){
+PhysicalNumber::PhysicalNumber (double a,Unit unit){
 	this->num=a;
 	this->unit=unit;
 }
@@ -247,7 +247,7 @@ void PhysicalNumber::convDis (int cases, PhysicalNumber& other) const
 		    }
         break; 
         
-        case 6:
+        case 6://if this is KM
             if((int)other.getType() == 0)
                 other.setValue(other.getValue()/(100000));
             if((int)other.getType() == 3){
@@ -314,7 +314,7 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
             break;
         case 5:
             if((int)other.getType() == 2)
-                other.setValue(other.getValue()/(1000));
+                other.setValue(other.getValue()*(1000));
             if((int)other.getType() == 8){
                 other.setValue(other.getValue()*1000);
             }
