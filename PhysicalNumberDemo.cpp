@@ -18,8 +18,13 @@ int main() {
   try {
     PhysicalNumber a(2, Unit::KM);   // 2 kilometers
     PhysicalNumber b(300, Unit::M);  // 300 meters
+    PhysicalNumber c(2,Unit::SEC);
+    PhysicalNumber d(3,Unit::MIN);
+    
     cout << a << endl;   // Prints "2[km]"
+    cout << b << endl;  // prints "3[M]"
     cout << (a+b) << endl;   // Prints "2.3[km]"
+    cout << (b+a) << endl;   // Prints "2300[m]"
     cout << (b-a) << endl;   // Prints "-1700[m]"
     cout << (-a) << endl;   // Prints "-2[km]"
 

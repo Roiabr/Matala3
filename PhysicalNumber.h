@@ -5,13 +5,30 @@ using namespace std;
 
 namespace ariel{
 class PhysicalNumber{
+private:
+Unit unit;
+double num;
+void convDis(int cases ,PhysicalNumber& other) const;
+void convTime(int cases ,PhysicalNumber& other) const;
+void convWig(int cases, PhysicalNumber& other) const;
+void convertByType(PhysicalNumber& other) const;
+
 public:
-Unit u;
-double a;
 //constructor
 PhysicalNumber (double a,Unit unit);
 //copy constructor
 PhysicalNumber (const PhysicalNumber& obj);
+
+void setValue(double d){ //setter
+		this->num = d;
+}
+double getValue() const { //getter
+		return num;
+}
+Unit getType() const{ 
+		return unit; 
+}
+
 
 PhysicalNumber operator+ (const PhysicalNumber& PHnum )const;
 PhysicalNumber operator- (const PhysicalNumber& PHnum )const;
@@ -20,8 +37,8 @@ PhysicalNumber operator- (const PhysicalNumber& PHnum )const;
 PhysicalNumber operator-();
 PhysicalNumber operator+() const;
 
-const PhysicalNumber& operator-= (const PhysicalNumber& PHnum );
-const PhysicalNumber& operator+= (const PhysicalNumber& PHnum );
+ PhysicalNumber& operator-= (const PhysicalNumber& PHnum );
+ PhysicalNumber& operator+= (const PhysicalNumber& PHnum );
 
 
 //compare operators
@@ -38,7 +55,7 @@ PhysicalNumber& operator--();
 
 
 //friends functions:
-friend istream& operator>>(istream&, const PhysicalNumber&);
+friend istream& operator>>(istream&,PhysicalNumber&);
 
 friend ostream& operator<<(ostream&, const PhysicalNumber&);
 };
