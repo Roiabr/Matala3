@@ -19,15 +19,6 @@ PhysicalNumber (double a,Unit unit);
 //copy constructor
 PhysicalNumber (const PhysicalNumber& obj);
 
-void setValue(double d){ //setter
-		this->num = d;
-}
-double getValue() const { //getter
-		return num;
-}
-Unit getType() const{ 
-		return unit; 
-}
 
 
 PhysicalNumber operator+ (const PhysicalNumber& PHnum )const;
