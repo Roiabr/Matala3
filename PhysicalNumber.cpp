@@ -1,7 +1,7 @@
-#include <iostream>
 #include "PhysicalNumber.h"
+#include <iostream>
+#include <sstream>
 #include <stdexcept>
-#include <string>
 using namespace ariel;
 using namespace std;
 
@@ -163,7 +163,6 @@ PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const
 
 PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other )
 {
-    
     if((int)this->unit % 3 != (int)other.unit % 3)
     {//cant do the operator on diffrent unit type
         throw std::invalid_argument("Exception,they must be from the same type ");
@@ -348,53 +347,56 @@ ostream& ariel::operator<<(ostream& stream, const PhysicalNumber& obj)
     return stream;
 }
 
-istream& ariel::operator>> (istream& is,PhysicalNumber& other)
-{
-    ios::pos_type startPosition = is.tellg();
-    double num = -99999;
-    string st=" ";
-    is>>num;
-    is>>st;
+istream& ariel::operator>> (istream& stream,PhysicalNumber& other)
+{ //based on the 04-const-friend-operators folder in the complex.cpp file for the >> operator
+    ios::pos_type startPosition = stream.tellg();
+    
+    double num = -1111111;
+    string st = " ";
+    stream >> num;
+    stream >> st;
 
-    if(num == -99999)
+    if(num == -1111111)
     {
-        throw std::invalid_argument("Exception,they must be from the same type ");
+          auto errorState = stream.rdstate();
+          stream.clear(); // clear error so seekg will work
+          stream.seekg(startPosition); // rewind
+          stream.clear(errorState); // set back the error flag
+          return stream;
     }   
     else
     {
-
-    Unit unit;
-    if(st.compare("[g]")==0)
-        unit=Unit::G;
-    else if(st.compare("[kg]")==0)
-    {
-        unit=Unit::KG;
+        Unit unit;
+        if(st.compare("[g]") == 0)
+            unit=Unit::G;
+        else if(st.compare("[kg]") == 0)
+            unit=Unit::KG;
+        else if(st.compare("[ton]") == 0)
+            unit=Unit::TON;
+        else if(st.compare("[cm]") == 0)
+            unit=Unit::CM;
+        else if(st.compare("[m]") == 0)
+            unit=Unit::M;
+        else if(st.compare("[km]") == 0)
+            unit=Unit::KM;
+        else if(st.compare("[sec]") == 0)
+            unit=Unit::SEC;
+        else if(st.compare("[min]") == 0)
+            unit=Unit::MIN;
+        else if(st.compare("[hour]") == 0)
+            unit=Unit::HOUR;
+        else// if cant find any of the type should throw flag
+        {
+          auto errorState = stream.rdstate();
+          stream.clear(); // clear error so seekg will work
+          stream.seekg(startPosition); // rewind
+          stream.clear(errorState); // set back the error flag
+          return stream;
+        }
+    other.unit = unit;
+    other.num = num;
     }
-    else if(st.compare("[ton]")==0)
-        unit=Unit::TON;
-    else if(st.compare("[cm]")==0)
-        unit=Unit::CM;
-    else if(st.compare("[m]")==0)
-        unit=Unit::M;
-    else if(st.compare("[km]")==0)
-        unit=Unit::KM;
-    else if(st.compare("[sec]")==0)
-        unit=Unit::SEC;
-    else if(st.compare("[min]")==0)
-        unit=Unit::MIN;
-    else if(st.compare("[hour]")==0)
-        unit=Unit::HOUR;
-    else{
-          auto errorState = is.rdstate();
-          is.clear(); // clear error so seekg will work
-          is.seekg(startPosition); // rewind
-          is.clear(errorState); // set back the error flag
-          return is;
-    }
-    other.unit=unit;
-    other.num=num;
-    }
-    return is;
+    return stream;
 }
 
 
