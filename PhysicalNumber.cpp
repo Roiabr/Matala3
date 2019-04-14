@@ -17,40 +17,23 @@ PhysicalNumber::PhysicalNumber (const PhysicalNumber& obj){
 	this->unit=obj.unit;
 }
 
-
-PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const{
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
-       ::__throw_bad_exception();
+/////////////////////////////////operators///////////////////////////////////////
+PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const
+{
+    if((int)this->unit % 3 != (int)other.unit % 3)
+    {//cant do the operator on diffrent unit type
+       throw std::invalid_argument("Exception,they must be from the same type");
     }
 
     PhysicalNumber p1(other);
     this->convertByType(p1);
     return PhysicalNumber(this->num+(p1.num),this->unit);
 }
-PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const{
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
-        ::__throw_bad_exception();
-    }
-    
-    PhysicalNumber p1(other);
-    this->convertByType(p1); 
-    return PhysicalNumber(this->num-(p1.num),this->unit);  
-}
-PhysicalNumber& PhysicalNumber::operator-= (const PhysicalNumber& other )
-{
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
-        ::__throw_bad_exception();
-    }
-    
-    PhysicalNumber p1(other);
-    this->convertByType(p1); 
-     this->num = this->num-p1.num;
-    return *this;
-}
+
 PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other ){
     
     if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
 
     PhysicalNumber p1(other);
@@ -62,6 +45,28 @@ PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other ){
 PhysicalNumber PhysicalNumber::operator+() const {
     return PhysicalNumber((this->num),this->unit);
 }
+//////////////////////// - operators ///////////////////////////////////////////
+PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const{
+    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+        throw std::invalid_argument("Exception,they must be from the same type");
+    }
+    
+    PhysicalNumber p1(other);
+    this->convertByType(p1); 
+    return PhysicalNumber(this->num-(p1.num),this->unit);  
+}
+PhysicalNumber& PhysicalNumber::operator-= (const PhysicalNumber& other )
+{
+    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+        throw std::invalid_argument("Exception,they must be from the same type");
+    }
+    
+    PhysicalNumber p1(other);
+    this->convertByType(p1); 
+     this->num = this->num-p1.num;
+    return *this;
+}
+
 PhysicalNumber PhysicalNumber::operator-(){
     return PhysicalNumber(-1*(this->num),this->unit);
 }
@@ -69,7 +74,7 @@ PhysicalNumber PhysicalNumber::operator-(){
 /////////////////////////////////compare operators/////////////////////////////////////////////////
 bool PhysicalNumber::operator!= ( const PhysicalNumber& other){
     if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
 
     PhysicalNumber p1(other);
@@ -78,9 +83,10 @@ bool PhysicalNumber::operator!= ( const PhysicalNumber& other){
         return true;
     return false;
 }
+
 bool PhysicalNumber::operator== (const PhysicalNumber& other){
     if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
 
     PhysicalNumber p1(other);
@@ -89,11 +95,12 @@ bool PhysicalNumber::operator== (const PhysicalNumber& other){
         return true;
     return false;
 }
-bool PhysicalNumber::operator<=(const PhysicalNumber& other)
+
+bool PhysicalNumber::operator<= (const PhysicalNumber& other)
 {
     if((int)this->unit % 3 != (int)other.unit % 3)//cant do the operator on diffrent unit type
     {
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
     PhysicalNumber p1(other);
     this->convertByType(p1);
@@ -101,11 +108,12 @@ bool PhysicalNumber::operator<=(const PhysicalNumber& other)
         return true;
     return false;
 }
-bool PhysicalNumber::operator>=(const PhysicalNumber& other)
+
+bool PhysicalNumber::operator>= (const PhysicalNumber& other)
 {
     if((int)this->unit % 3 != (int)other.unit % 3)//cant do the operator on diffrent unit type
     {
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
 
      PhysicalNumber p1(other);
@@ -115,11 +123,11 @@ bool PhysicalNumber::operator>=(const PhysicalNumber& other)
     return false;
 }
 
-bool PhysicalNumber::operator>(const PhysicalNumber& other)
+bool PhysicalNumber::operator> (const PhysicalNumber& other)
 {
     if((int)this->unit % 3 != (int)other.unit % 3)//cant do the operator on diffrent unit type
     {
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
     PhysicalNumber p1(other);
     this->convertByType(p1);
@@ -127,11 +135,12 @@ bool PhysicalNumber::operator>(const PhysicalNumber& other)
         return true;
     return false;
 }
-bool PhysicalNumber::operator<(const PhysicalNumber& other)
+
+bool PhysicalNumber::operator< (const PhysicalNumber& other)
 {
     if((int)this->unit % 3 != (int)other.unit % 3)//cant do the operator on diffrent unit type
     {
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
     PhysicalNumber p1(other);
     this->convertByType(p1);
@@ -139,7 +148,6 @@ bool PhysicalNumber::operator<(const PhysicalNumber& other)
         return true;
     return false;
 }
-
 
 PhysicalNumber& PhysicalNumber::operator++()
 {
@@ -154,41 +162,48 @@ PhysicalNumber& PhysicalNumber::operator--()
 const PhysicalNumber PhysicalNumber::operator++(int)
 {
    PhysicalNumber copy = *this;
-    this->num++;
-    return copy;
+   this->num++;
+   return copy;
 }
- const PhysicalNumber PhysicalNumber::operator--(int)
- {
+const PhysicalNumber PhysicalNumber::operator--(int)
+{
     PhysicalNumber copy = *this;
     this->num--;
     return copy;
 }
 
 ///////////////////////////friends functions:input && output ///////////////////////
-ostream& ariel::operator<<(ostream& stream, const PhysicalNumber& obj)
+
+string find_which_type(const PhysicalNumber& obj)
 {
-    switch((int)(obj.unit))
+    switch((int)(obj.getType()))
     {
-		case 2: stream<<obj.num<<"[g]";
+		case 2: return "g";
 		break;
-		case 5: stream<<obj.num<<"[kg]";
+		case 5: return "kg";
 		break;
-		case 8: stream<<obj.num<<"[ton]";
+		case 8: return "ton";
 		break;
-		case 0: stream<<obj.num<<"[cm]";
+		case 0: return "cm";
 		break;
-		case 3: stream<<obj.num<<"[m]";
+		case 3: return "m";
 		break;
-		case 6: stream<<obj.num<<"[km]";
+		case 6: return "km";
 		break;
-		case 1: stream<<obj.num<<"[sec]";
+		case 1: return "sec";
 		break;
-		case 4: stream<<obj.num<<"[min]";
+		case 4: return "min";
 		break;
-		case 7: stream<<obj.num<<"[hour]";
+		case 7: return "hour";
 		break;
     }
-	return stream;
+	return "";
+}
+
+ostream& ariel::operator<<(ostream& stream, const PhysicalNumber& obj)
+{
+    stream<< obj.getValue() << "[" << find_which_type(obj) << "]";
+    return stream;
 }
 
 istream& ariel::operator>> (istream& is,PhysicalNumber& other)
@@ -200,7 +215,7 @@ istream& ariel::operator>> (istream& is,PhysicalNumber& other)
 
     if(num == -99999)
     {
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }   
     else
     {
@@ -227,7 +242,7 @@ istream& ariel::operator>> (istream& is,PhysicalNumber& other)
     else if(st.compare("[hour]")==0)
         unit=Unit::HOUR;
     else{
-        ::__throw_bad_exception();
+        throw std::invalid_argument("Exception,they must be from the same type");
     }
     other.unit=unit;
     other.num=num;
