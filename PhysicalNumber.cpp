@@ -17,6 +17,137 @@ PhysicalNumber::PhysicalNumber (const PhysicalNumber& obj){
 	this->unit=obj.unit;
 }
 
+///////////////////////////private functions////////////////////////////////
+
+//the function find the type of the PhysicalNumber and send
+// it to the correct convert function
+void ariel::PhysicalNumber::convertByType(PhysicalNumber& other) const
+{
+	if((int)this->unit % 3 == 0)//this is the distance unit
+    {
+		this->convDis((int)this->unit ,other);
+    }
+	else if((int)this->unit % 3 == 1)// this is the time unit
+    {
+		this->convTime((int)this->unit, other);
+	}
+	else//the Weight unit
+    {
+		this->convWig((int)this->unit, other);
+	}
+}
+
+//the function convert the PhysicalNumber to the correct unit type in distance
+void PhysicalNumber::convDis (int cases, PhysicalNumber& other) const 
+{
+    switch (cases)
+    {
+        case 0://if this is CM
+            if((int)other.unit == 3)// other type is M
+                other.num = (other.num*100);
+            if((int)other.unit == 6)// other type is KM
+            {
+                other.num = (other.num*100000);
+            }
+            break;
+        case 3://if this is M
+            if((int)other.unit== 0){
+			    other.num = (other.num/100); //other is CM
+		    }
+		    if((int)other.unit== 6){
+			    other.num = (other.num*1000); //other is KM
+		    }
+        break; 
+        
+        case 6://if this is KM
+            if((int)other.unit == 0) // other CM
+                other.num = (other.num/(100000));
+            if((int)other.unit == 3){ // other M
+                other.num = (other.num/1000);
+            }
+    }
+}
+//the function convert the PhysicalNumber to the correct unit type in Time
+void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
+{
+    switch (cases)
+    {
+        case 1://sec
+            if((int)other.unit == 4)//MIN
+                other.num = (other.num*60);
+            if((int)other.unit == 7)//HOUR
+            {
+                other.num = (other.num*(60*60));
+            }
+            if((int)other.unit == 1)
+            {
+                return;
+            }
+            break;
+        case 4://MIN
+            if((int)other.unit == 1){//SEC
+                other.num = (other.num*60);
+            }
+            if((int)other.unit == 7){//HOUR
+                other.num = (other.num*60);
+            }
+            if((int)other.unit == 4)
+            {
+                return;
+            }
+            
+        case 7://HOUR
+            if((int)other.unit == 1)//SEC
+                other.num = (other.num/(60*60));
+            if((int)other.unit == 4){//MIN
+                other.num = (other.num/60);
+            }
+            if((int)other.unit == 7)
+            {
+                return;
+            } 
+    }
+}
+//the function convert the PhysicalNumber to the correct unit type in weight
+void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
+{
+    switch (cases)
+    {
+        case 2://G
+            if((int)other.unit == 5)//KG
+                other.num = (other.num*1000);
+            if((int)other.unit == 8){//TON
+                other.num = (other.num*1000*1000);
+            }
+            if((int)other.unit == 2)
+            {
+                return;
+            }
+            break;
+        case 5://KG
+            if((int)other.unit == 2)//G
+                other.num = (other.num*(1000));
+            if((int)other.unit == 8){//TON
+                other.num = (other.num*1000);
+            }
+            if((int)other.unit == 5)
+            {
+                return;
+            }
+ 
+        case 8://TON
+            if((int)other.unit == 2)//G
+                other.num = (other.num/(1000*1000));
+            if((int)other.unit == 5){//KG
+                other.num = (other.num/1000);
+            }
+            if((int)other.unit == 8)
+            {
+                return;
+            }
+            
+    }
+}
 /////////////////////////////////operators///////////////////////////////////////
 PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const
 {
@@ -30,9 +161,11 @@ PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const
     return PhysicalNumber(this->num+(p1.num),this->unit);
 }
 
-PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other ){
+PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other )
+{
     
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+    if((int)this->unit % 3 != (int)other.unit % 3)
+    {//cant do the operator on diffrent unit type
         throw std::invalid_argument("Exception,they must be from the same type ");
     }
 
@@ -42,12 +175,15 @@ PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other ){
     return *this;
 }
 
-PhysicalNumber PhysicalNumber::operator+() const {
+PhysicalNumber PhysicalNumber::operator+() const 
+{
     return PhysicalNumber((this->num),this->unit);
 }
 //////////////////////// - operators ///////////////////////////////////////////
-PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const{
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const
+{
+    if((int)this->unit % 3 != (int)other.unit % 3)
+    {//cant do the operator on diffrent unit type
         throw std::invalid_argument("Exception,they must be from the same type ");
     }
     
@@ -57,7 +193,8 @@ PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const{
 }
 PhysicalNumber& PhysicalNumber::operator-= (const PhysicalNumber& other )
 {
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+    if((int)this->unit % 3 != (int)other.unit % 3)
+    {//cant do the operator on diffrent unit type
         throw std::invalid_argument("Exception,they must be from the same type ");
     }
     
@@ -67,13 +204,16 @@ PhysicalNumber& PhysicalNumber::operator-= (const PhysicalNumber& other )
     return *this;
 }
 
-PhysicalNumber PhysicalNumber::operator-(){
+PhysicalNumber PhysicalNumber::operator-()
+{
     return PhysicalNumber(-1*(this->num),this->unit);
 }
 
 /////////////////////////////////compare operators/////////////////////////////////////////////////
-bool PhysicalNumber::operator!= ( const PhysicalNumber& other){
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+bool PhysicalNumber::operator!= ( const PhysicalNumber& other)
+{
+    if((int)this->unit % 3 != (int)other.unit % 3)
+    {//cant do the operator on diffrent unit type
         throw std::invalid_argument("Exception,they must be from the same type ");
     }
 
@@ -84,8 +224,10 @@ bool PhysicalNumber::operator!= ( const PhysicalNumber& other){
     return false;
 }
 
-bool PhysicalNumber::operator== (const PhysicalNumber& other){
-    if((int)this->unit % 3 != (int)other.unit % 3){//cant do the operator on diffrent unit type
+bool PhysicalNumber::operator== (const PhysicalNumber& other)
+{
+    if((int)this->unit % 3 != (int)other.unit % 3)
+    {//cant do the operator on diffrent unit type
         throw std::invalid_argument("Exception,they must be from the same type ");
     }
 
@@ -97,7 +239,7 @@ bool PhysicalNumber::operator== (const PhysicalNumber& other){
 }
 
 bool PhysicalNumber::operator<= (const PhysicalNumber& other)
-{
+ {
     if((int)this->unit % 3 != (int)other.unit % 3)//cant do the operator on diffrent unit type
     {
         throw std::invalid_argument("Exception,they must be from the same type  ");
@@ -208,7 +350,8 @@ ostream& ariel::operator<<(ostream& stream, const PhysicalNumber& obj)
 
 istream& ariel::operator>> (istream& is,PhysicalNumber& other)
 {
-    double num=-99999;
+    ios::pos_type startPosition = is.tellg();
+    double num = -99999;
     string st=" ";
     is>>num;
     is>>st;
@@ -242,7 +385,11 @@ istream& ariel::operator>> (istream& is,PhysicalNumber& other)
     else if(st.compare("[hour]")==0)
         unit=Unit::HOUR;
     else{
-        throw std::invalid_argument("Exception,they must be from the same type ");
+          auto errorState = is.rdstate();
+          is.clear(); // clear error so seekg will work
+          is.seekg(startPosition); // rewind
+          is.clear(errorState); // set back the error flag
+          return is;
     }
     other.unit=unit;
     other.num=num;
@@ -252,133 +399,3 @@ istream& ariel::operator>> (istream& is,PhysicalNumber& other)
 
 
 
-void ariel::PhysicalNumber::convertByType(PhysicalNumber& other) const
-{
-	if((int)this->unit % 3 == 0)//this is the distance unit
-    {
-		this->convDis((int)this->unit ,other);
-    }
-	else if((int)this->unit % 3 == 1)// this is the time unit
-    {
-		this->convTime((int)this->unit, other);
-	}
-	else//the Weight unit
-    {
-		this->convWig((int)this->unit, other);
-	}
-
-}
-//the function convert the PhysicalNumber to the correct unit type in distance
-void PhysicalNumber::convDis (int cases, PhysicalNumber& other) const 
-{
-    switch (cases)
-    {
-        case 0://if this is CM
-            if((int)other.unit == 3)// other type is M
-                other.num = (other.num*100);
-            if((int)other.unit == 6)// other type is KM
-            {
-                other.num = (other.num*100000);
-            }
-            break;
-        case 3://if this is M
-            if((int)other.unit== 0){
-			    other.num = (other.num/100); //other is CM
-		    }
-		    if((int)other.unit== 6){
-			    other.num = (other.num*1000); //other is KM
-		    }
-        break; 
-        
-        case 6://if this is KM
-            if((int)other.unit == 0) // other CM
-                other.num = (other.num/(100000));
-            if((int)other.unit == 3){ // other M
-                other.num = (other.num/1000);
-            }
-    }
-}
-
-void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
-//the function convert the PhysicalNumber to the correct unit type in Time
-{
-    switch (cases)
-    {
-        case 1://sec
-            if((int)other.unit == 4)//MIN
-                other.num = (other.num*60);
-            if((int)other.unit == 7)//HOUR
-            {
-                other.num = (other.num*(60*60));
-            }
-            if((int)other.unit == 1)
-            {
-                return;
-            }
-            break;
-        case 4://MIN
-            if((int)other.unit == 1){//SEC
-                other.num = (other.num*60);
-            }
-            if((int)other.unit == 7){//HOUR
-                other.num = (other.num*60);
-            }
-            if((int)other.unit == 4)
-            {
-                return;
-            }
-            
-        case 7://HOUR
-            if((int)other.unit == 1)//SEC
-                other.num = (other.num/(60*60));
-            if((int)other.unit == 4){//MIN
-                other.num = (other.num/60);
-            }
-            if((int)other.unit == 7)
-            {
-                return;
-            } 
-    }
-}
-
-void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
-//the function convert the PhysicalNumber to the correct unit type in weight
-{
-    switch (cases)
-    {
-        case 2://G
-            if((int)other.unit == 5)//KG
-                other.num = (other.num*1000);
-            if((int)other.unit == 8){//TON
-                other.num = (other.num*1000*1000);
-            }
-            if((int)other.unit == 2)
-            {
-                return;
-            }
-            break;
-        case 5://KG
-            if((int)other.unit == 2)//G
-                other.num = (other.num*(1000));
-            if((int)other.unit == 8){//TON
-                other.num = (other.num*1000);
-            }
-            if((int)other.unit == 5)
-            {
-                return;
-            }
- 
-        case 8://TON
-            if((int)other.unit == 2)//G
-                other.num = (other.num/(1000*1000));
-            if((int)other.unit == 5){//KG
-                other.num = (other.num/1000);
-            }
-            if((int)other.unit == 8)
-            {
-                return;
-            }
-            
-    }
-
-}
