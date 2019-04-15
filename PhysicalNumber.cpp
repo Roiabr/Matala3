@@ -350,7 +350,6 @@ ostream& ariel::operator<<(ostream& stream, const PhysicalNumber& obj)
 istream& ariel::operator>> (istream& stream,PhysicalNumber& other)
 { //based on the 04-const-friend-operators folder in the complex.cpp file for the >> operator
     ios::pos_type startPosition = stream.tellg();
-    
     double num = -1111111;
     string st = " ";
     stream >> num;

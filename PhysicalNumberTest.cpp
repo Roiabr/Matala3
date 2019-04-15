@@ -1,565 +1,244 @@
+/**
+ * Examples of automatic tests for the exercise on physical numbers.
+ *
+ * @author Erel Segal-Halevi
+ * @since 2019-02
+ */
+
 #include <iostream>
-
 #include <sstream>
-
 using std::cout, std::endl, std::istringstream;
-
 #include "PhysicalNumber.h"
-
 using ariel::PhysicalNumber, ariel::Unit;
-
 #include "badkan.hpp"
 
-int main()
-{
-
+int main() {
   badkan::TestCase testcase;
-
-  int grade = 0;
-
+  int grade=0;
+  int x,y,z;
   int signal = setjmp(badkan::longjmp_buffer);
-
-  if (signal == 0)
-  {
+  if (signal == 0) {
 
     // BASIC TESTS - DO NOT CHANGE
-
     PhysicalNumber a(2, Unit::KM);
-
     PhysicalNumber b(300, Unit::M);
-
     PhysicalNumber c(2, Unit::HOUR);
-
     PhysicalNumber d(30, Unit::MIN);
 
-    //DISTANCE
-    PhysicalNumber km2(2, Unit::KM);
+    ////////Weight////////////////
+    PhysicalNumber aa(2, Unit::TON);
+    PhysicalNumber bb(2000, Unit::KG);
+    PhysicalNumber cc(2, Unit::TON);
+    PhysicalNumber dd(20000, Unit::G);
 
-    PhysicalNumber mtr2000(2000, Unit::M);
+    //////////////Time////////////////
+    PhysicalNumber aaa(2, Unit::HOUR);
+    PhysicalNumber bbb(120, Unit::MIN);
+    PhysicalNumber ccc(2, Unit::HOUR);
+    PhysicalNumber ddd(360, Unit::SEC);
 
-    PhysicalNumber cm200000(200000, Unit::CM);
-
-    PhysicalNumber km05(0.5, Unit::KM);
-    PhysicalNumber km1(1, Unit::KM);
-    PhysicalNumber km03(0.3, Unit::KM);
-    PhysicalNumber km3(3, Unit::KM);
-
-    //TIME
-    PhysicalNumber hr2(2, Unit::HOUR);
-
-    PhysicalNumber min120(120, Unit::MIN);
-
-    PhysicalNumber sec7200(7200, Unit::SEC);
-
-    PhysicalNumber min60(60, Unit::MIN);
-
-    //MASS
-    PhysicalNumber ton2(2, Unit::TON);
-
-    PhysicalNumber kg2000(2000, Unit::KG);
-
-    PhysicalNumber g2000000(2000000, Unit::G);
-
-    PhysicalNumber ton1(1, Unit::TON);
-
-    PhysicalNumber kg500(500, Unit::KG);
-
-    PhysicalNumber g1000(1000, Unit::G);
+    ////////////Distance///////////////
+    PhysicalNumber aaaa(1, Unit::KM);
+    PhysicalNumber bbbb(1000, Unit::M);
+    PhysicalNumber cccc(2, Unit::KM);
+    PhysicalNumber dddd(100000, Unit::CM);
 
     testcase
-
-        .setname("Basic output")
-
-        .CHECK_OUTPUT(a, "2[km]")
-
-        .CHECK_OUTPUT(b, "300[m]")
-
-        .setname("Compatible dimensions")
-
-        .CHECK_OUTPUT(b + a, "2300[m]")
-
-        .CHECK_OUTPUT((a += b), "2.3[km]")
-
-        .CHECK_OUTPUT(a, "2.3[km]")
-
-        .CHECK_OUTPUT(a + a, "4.6[km]")
-
-        .CHECK_OUTPUT(b - b, "0[m]")
-
-        .CHECK_OUTPUT(c, "2[hour]")
-
-        .CHECK_OUTPUT(d, "30[min]")
-
-        .CHECK_OUTPUT(d + c, "150[min]")
-
-        .setname("Incompatible dimensions")
-
-        .CHECK_THROWS(a + c)
-
-        .CHECK_THROWS(a + d)
-
-        .CHECK_THROWS(b + c)
-
-        .CHECK_THROWS(b + d)
-
-        .setname("Basic input")
-
-        .CHECK_OK(istringstream("700[kg]") >> a)
-
-        .CHECK_OUTPUT((a += PhysicalNumber(1, Unit::TON)), "1700[kg]")
-
-        // YOUR TESTS - INSERT AS MANY AS YOU WANT
-
-        ////// AUTHORS : OFEK BADER AND SNIR YEFET /////
-
-        ///////////// DISTANCE UNITS ///////////////////
-
-        // TEST DISTANCE UNITS CONSTRUCTOR and output (Ctor)
-
-        .CHECK_OUTPUT(km2, "2[km]")
-
-        .CHECK_OUTPUT(mtr2000, "2000[m]")
-
-        .CHECK_OUTPUT(cm200000, "200000[cm]")
-
-        .CHECK_OUTPUT(km05, "0.5[km]")
-
-        // TEST DISTANCE UNITS COMPARISON (=)
-
-        .CHECK_EQUAL(mtr2000, km2) // Should Return True (V)
-
-        .CHECK_EQUAL(cm200000, km2) // Should Return True (V)
-
-        .CHECK_EQUAL(cm200000, mtr2000) // Should Return True (V)
-
-        // TEST DISTANCE UNITS COMPARISON (NOT) (!=)
-
-        .CHECK_EQUAL((km05 != km05), false) //suppose to return true
-
-        .CHECK_EQUAL((km05 != km2), true) //suppose to return true
-
-        .CHECK_EQUAL((mtr2000 != km2), false) //suppose to return false (actual=false ,expected=true)
-
-        .CHECK_THROWS(km05 != hr2)
-
-        // TEST DISTANCE UNITS GREATER (>)
-
-        .CHECK_EQUAL((km05 > km2), false) //suppose to return true
-
-        .CHECK_EQUAL((km2 > km05), true) // supose to return true
-
-        .CHECK_EQUAL((km05 > km05), false) //suppose to return true
-
-        .CHECK_EQUAL((b > km05), false) //suppose to return true (b = 300 meter)
-
-        .CHECK_THROWS(km05 > hr2)
-
-        // TEST DISTANCE UNITS LESSER (<)
-
-        .CHECK_EQUAL((km05 < km2), true) //suppose to return true
-
-        .CHECK_EQUAL((km2 < km05), false) // supose to return true
-
-        .CHECK_EQUAL((km05 < km05), false) //suppose to return true
-
-        .CHECK_EQUAL((b < km05), true) //suppose to return true (b = 300 meter)
-
-        .CHECK_THROWS(km05 < hr2)
-
-        // TEST DISTANCE UNITS COMPARISON GREATER (>=)
-
-        .CHECK_EQUAL((km05 >= km2), false)
-
-        .CHECK_EQUAL((km2 >= km05), true)
-
-        .CHECK_EQUAL((km05 >= km05), true) //suppose to return true
-
-        .CHECK_EQUAL((b >= km05), false) //suppose to return false (b = 300 meter)
-
-        .CHECK_THROWS(km05 >= hr2)
-
-        // TEST DISTANCE UNITS COMPARISON LESSER (<=)
-
-        .CHECK_EQUAL((km05 <= km2), true) //suppose to return true
-
-        .CHECK_EQUAL((km2 <= km05), false) // supose to return false
-
-        .CHECK_EQUAL((km05 <= km05), true) //suppose to return true
-
-        .CHECK_EQUAL((b <= km05), true) //suppose to return true (b = 300 meter)
-
-        .CHECK_THROWS(km05 <= hr2)
-
-        // TEST DISTANCE UNITS ADDITION OP (+)
-
-        .CHECK_EQUAL((km05 + PhysicalNumber(1.5, Unit::KM)), km2) // Should Return True (V)
-
-        .CHECK_EQUAL((km05 + PhysicalNumber(1500, Unit::M)), km2) // Should Return True (V)
-
-        .CHECK_EQUAL((cm200000 + PhysicalNumber(1.2, Unit::KM)), +PhysicalNumber(3.2, Unit::KM)) // Should Return True (V)
-
-        .CHECK_EQUAL((km05 + PhysicalNumber(250, Unit::M)), PhysicalNumber(750, Unit::M)) //should return true
-
-        .CHECK_THROWS(km05 + hr2)
-
-        // TEST DISTANCE UNITS ADDTIONEQ OP (+=)
-
-        .CHECK_OUTPUT((cm200000 += km2), "400000[cm]") //suppose to return true (cm200000 = 400000cm)
-
-        .CHECK_OUTPUT((km05 += PhysicalNumber(500, Unit::M)), "1[km]") // (km05 = 1km)
-
-        //.CHECK_OUTPUT((km05+=0),"0.5[km]") //suppose to return true (ALERT MIGHT CAUSE PROBLEM SINCE WE A DECIMAL POINT??)
-
-        .CHECK_OUTPUT((km05 += PhysicalNumber(0.5, Unit::KM)), "1.5[km]") // (km05 = 1.5km)
-
-        .CHECK_THROWS(km05 += hr2) // should throw exception DISTANCE != TIME.
-
-        // TEST DISTANCE UNITS ADDITION UNARY OP (+..)
-
-        // TEST DISTANCE UNITS SUBSCTRACTION OP (-)
-        .CHECK_OUTPUT(PhysicalNumber(1.5, Unit::KM) - km05, "0[km]") //
-
-        .CHECK_OUTPUT(cm200000 - PhysicalNumber(1.3, Unit::KM), "270000[cm]") // suppose to return true
-
-        .CHECK_THROWS(km05 -= hr2)
-
-        // TEST DISTANCE UNTIS SUBSCTRACTIONEQ OP (-=)
-
-        .CHECK_OUTPUT((cm200000 -= km2), "200000[cm]") // suppose to return true
-
-        .CHECK_OUTPUT((km05 -= PhysicalNumber(400, Unit::M)), "1.1[km]") //SUPPOSE TO RETURN TRUE
-
-        // .CHECK_OUTPUT((km05-=0),"0.5[km]") //suppose to return true (ALERT MIGHT CAUSE PROBLEM SINCE WE A DECIMAL POINT??)
-
-        .CHECK_THROWS(km05 -= hr2) // should throw an exception
-
-        // TEST DISTANCE UNTIS SUBSCTRACTION UNARY OP (-..)
-
-        // TEST DISTANCE UNTIS POSTFIX INCREMENT (..++)
-
-        .CHECK_OUTPUT(km2++, "2[km]") // (km3 = 3km)
-        .CHECK_OUTPUT(km2, "3[km]")   // (km2 = 3km)
-        .CHECK_EQUAL(km1++, PhysicalNumber(1,Unit::KM))
-        .CHECK_EQUAL(km1, PhysicalNumber(2,Unit::KM))
-
-
-        .CHECK_OUTPUT(cm200000++, "200000[cm]") // (cm200000 = 270000)
-        .CHECK_OUTPUT(cm200000, "200001[cm]")   // (cm200000 = 270000)
-
-        // TEST DISTANCE UNTIS PREFIX INCREMENT (++..)
-
-        .CHECK_OUTPUT(++km2, "4[km]") //suppose to return true
-        .CHECK_OUTPUT(km2, "4[km]")   //suppose to return true
-
-        .CHECK_OUTPUT(++cm200000, "200002[cm]") //suppose to return true
-        .CHECK_OUTPUT(cm200000, "200002[cm]")   //suppose to return true
-
-        ///////////// TIME UNITS ///////////////////  D=30MIN
-
-        // TEST TIME UNITS CONSTRUCTOR and output (Ctor)
-
-        .CHECK_OUTPUT(hr2, "2[hour]")
-
-        .CHECK_OUTPUT(min120, "120[min]")
-
-        .CHECK_OUTPUT(sec7200, "7200[sec]")
-
-        .CHECK_OUTPUT(min60, "60[min]")
-
-        .CHECK_OUTPUT(PhysicalNumber(14.212, Unit::MIN), "14.212[min]")
-
-        // TEST TIME UNITS COMPARISON (=)
-
-        .CHECK_EQUAL(hr2, min120) // suppose to return true
-
-        .CHECK_EQUAL(sec7200, min120) //suppose to return true
-
-        .CHECK_EQUAL(sec7200, hr2) //suppose to return true
-
-        //.CHECK_THROWS(min120=km05) // TODO suppose to throw exception
-
-        // TEST TIME UNITS COMPARISON (NOT) (!=)
-
-        .CHECK_EQUAL(sec7200 != min60, true) //suppose to return true
-
-        .CHECK_EQUAL(sec7200 != min120, false) // suppose to return true
-
-        .CHECK_EQUAL(min120 != hr2, false) //suppose to return true
-
-        .CHECK_EQUAL(hr2 != sec7200, false) // suppose to return true
-
-        .CHECK_THROWS(hr2 != a)
-
-        // TEST TIME UNITS GREATER (>)
-
-        .CHECK_EQUAL(PhysicalNumber(121, Unit::MIN) > hr2, true) // suppose to return true to all
-
-        .CHECK_EQUAL(hr2 > hr2, false) //
-
-        .CHECK_EQUAL(min60 > d, true) //
-
-        .CHECK_EQUAL(min60 > hr2, false) //
-
-        .CHECK_THROWS(d > a)
-
-        // TEST TIME UNITS LESSER (<)
-
-        .CHECK_EQUAL(c < hr2, false) //both equals 2 hours
-
-        .CHECK_EQUAL(d < c, true) //suppose to return true d =30min , c = 2hr
-
-        .CHECK_EQUAL(min60 < hr2, true) //suppose to return true
-
-        .CHECK_EQUAL(sec7200 < hr2, false) //suppose to return true
-
-        .CHECK_THROWS(a < d)
-
-        // TEST TIME UNITS COMPARISON GREATER (>=)
-
-        .CHECK_EQUAL(c >= hr2, true) //both equals
-
-        .CHECK_EQUAL(min60 >= d, true) //d is 30min
-
-        .CHECK_EQUAL(sec7200 >= hr2, true) //suppose to return true
-
-        .CHECK_EQUAL(min120 >= min60, true)
-
-        .CHECK_THROWS(hr2 >= km2)
-
-        // TEST TIME UNITS COMPARISON LESSER (<=)
-
-        .CHECK_EQUAL(c <= hr2, true) //both equals
-
-        .CHECK_EQUAL(min60 <= d, false) //d is 30min
-
-        .CHECK_EQUAL(sec7200 <= hr2, true) //suppose to return true
-
-        .CHECK_EQUAL(min120 <= min60, false)
-
-        .CHECK_THROWS(hr2 <= km2)
-
-        // TEST TIME UNITS ADDITION OP (+)
-        .CHECK_EQUAL(hr2 + hr2, PhysicalNumber(4, Unit::HOUR)) //suppose to return true
-        .CHECK_EQUAL(hr2 + min60, PhysicalNumber(3, Unit::HOUR))
-        .CHECK_EQUAL(hr2 + d, PhysicalNumber(2.5, Unit::HOUR))
-        .CHECK_EQUAL(min120 + sec7200, PhysicalNumber(240, Unit::MIN))
-        .CHECK_THROWS(hr2 + km05)
-        .CHECK_THROWS(min120 + PhysicalNumber(3, Unit::KM))
-        // TEST TIME UNITS ADDTIONEQ OP (+=)
-        .CHECK_OUTPUT((hr2 += hr2), "4[hour]")
-        .CHECK_OUTPUT((sec7200 += PhysicalNumber(120, Unit::MIN)), "14400[sec]") //NOTICE: not sure about the string syntax "[sec]""
-        .CHECK_OUTPUT((min60 += PhysicalNumber(30, Unit::MIN)), "90[min]")       // (min60 = 90)
-        .CHECK_OUTPUT((min120 += hr2), "360[min]")                               // (min120 = 360min)
-        .CHECK_THROWS(min120 += km05)
-        .CHECK_THROWS(hr2 += km05)
-        // TEST TIME UNTIS ADDITION UNARY OP (+..)
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_THROWS()
-        // TEST TIME UNTIS SUBSCTRACTION OP (-)
-        .CHECK_OUTPUT((hr2 - PhysicalNumber(30, Unit::MIN)), "3.5[hour]")
-        .CHECK_OUTPUT((hr2 - hr2), "0[hour]")
-        .CHECK_OUTPUT((sec7200 - PhysicalNumber(60, Unit::MIN)), "10800[sec]")
-        .CHECK_OUTPUT((min120 - PhysicalNumber(30, Unit::MIN)), "330[min]")
-        .CHECK_THROWS(min120 - km05)
-        .CHECK_THROWS(sec7200 - km05)
-        // TEST TIME UNTIS SUBSCTRACTIONEQ OP (-=)
-        .CHECK_OUTPUT((hr2 -= PhysicalNumber(30, Unit::MIN)), "3.5[hour]") // hr2 = 3.5hour
-        .CHECK_OUTPUT((hr2 -= hr2), "0[hour]")
-        .CHECK_OUTPUT((sec7200 -= PhysicalNumber(60, Unit::MIN)), "10800[sec]")
-        .CHECK_EQUAL(sec7200, PhysicalNumber(10800, Unit::SEC))
-        .CHECK_OUTPUT((min120 -= PhysicalNumber(30, Unit::MIN)), "330[min]")
-        .CHECK_THROWS(min120 -= km05)
-        .CHECK_THROWS(sec7200 -= km05)
-        // TEST TIME UNTIS SUBSCTRACTION UNARY OP (-..)
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_OUTPUT((),"[]")
-        // .CHECK_OUTPUT((),"[]")
-        //  .CHECK_THROWS()
-        // TEST TIME UNTIS POSTFIX INCREMENT (..++)
-        .CHECK_OUTPUT((hr2++), "0[hour]")
-        .CHECK_OUTPUT((hr2), "1[hour]")
-        .CHECK_OUTPUT((sec7200++), "10800[sec]")
-        .CHECK_OUTPUT((sec7200), "10801[sec]")
-        .CHECK_OUTPUT((min60++), "90[min]")
-        .CHECK_OUTPUT((min60), "91[min]")
-        // .CHECK_OUTPUT(((hr2++)++),"4[hour]")      //PROBLEM
-        // TEST TIME UNTIS PREFIX INCREMENT (++..)
-        .CHECK_OUTPUT((++hr2), "2[hour]")
-        .CHECK_OUTPUT((hr2), "2[hour]")
-        .CHECK_OUTPUT(++(++sec7200), "10803[sec]")
-        .CHECK_OUTPUT(sec7200, "10803[sec]")
-        .CHECK_OUTPUT((++min60), "92[min]")
-        .CHECK_OUTPUT((min60), "92[min]")
-        //.CHECK_OUTPUT(++++++(hr2),"5[hour]")      //PROBLEM
-        //.CHECK_OUTPUT(++++++++++(min60),"65[min]")
-
-        ///////////// MASS UNITS ///////////////////
-
-        //TON2 , TON1 , KG2000 , KG500 ,G2000000 , G1000
-        // TEST MASS UNITS COMPARISON (=)
-        .CHECK_EQUAL(ton2 == ton1, false)
-        .CHECK_EQUAL(ton2 == kg2000, true)
-        .CHECK_EQUAL(g2000000 == kg2000, true)
-        .CHECK_EQUAL(g1000 == ton1, false)
-        .CHECK_THROWS(ton1 == hr2)
-
-        // TEST MASS UNITS COMPARISON (NOT) (!=)
-        .CHECK_EQUAL(ton2 != ton1, true)
-        .CHECK_EQUAL(ton2 != kg2000, false)
-        .CHECK_EQUAL(g2000000 != kg2000, false)
-        .CHECK_EQUAL(g1000 != ton1, true)
-        .CHECK_THROWS(ton1 != hr2)
-        // TEST MASS UNITS GREATER (>)
-        .CHECK_EQUAL(kg500 > ton2, false)
-        .CHECK_EQUAL(ton2 > ton2, false)
-        .CHECK_EQUAL(ton1 > g1000, true)
-        .CHECK_EQUAL(kg2000 > kg500, true)
-        .CHECK_THROWS(g2000000 > d)
-        // TEST MASS UNITS LESSER (<)
-        .CHECK_EQUAL(kg500 < ton2, true)
-        .CHECK_EQUAL(ton2 < ton2, false)
-        .CHECK_EQUAL(ton1 < g1000, false)
-        .CHECK_EQUAL(kg2000 < kg500, false)
-        .CHECK_THROWS(kg2000 < d)
-        // TEST MASS UNITS COMPARISON GREATER (>=)
-        .CHECK_EQUAL(g1000 >= kg2000, false)
-        .CHECK_EQUAL(ton1 >= ton1, true)
-        .CHECK_EQUAL(kg500 >= g1000, true)
-        .CHECK_EQUAL(ton2 >= g2000000, true)
-        .CHECK_THROWS(ton2 >= hr2)
-        // TEST MASS UNITS COMPARISON LESSER (<=)
-        .CHECK_EQUAL(g1000 <= kg2000, true)
-        .CHECK_EQUAL(ton1 <= ton1, true)
-        .CHECK_EQUAL(kg500 <= g1000, false)
-        .CHECK_EQUAL(ton2 <= g2000000, true)
-        .CHECK_THROWS(ton2 <= hr2)
-        // TEST MASS UNITS ADDITION OP (+)
-        .CHECK_OUTPUT(ton1 + ton1, "2[ton]")
-        .CHECK_OUTPUT(kg2000 + ton1, "3000[kg]")
-        .CHECK_OUTPUT(ton2 + g1000, "2.001[ton]")
-        .CHECK_OUTPUT(kg500 + ton1, "1500[kg]")
-        .CHECK_THROWS(kg500 + d)
-        // TEST MASS UNITS ADDTIONEQ OP (+=)
-        .CHECK_OUTPUT((ton1 += ton1), "2[ton]")
-        .CHECK_OUTPUT((kg2000 += ton1), "4000[kg]")
-        .CHECK_OUTPUT((g1000 += PhysicalNumber(150, Unit::G)), "1150[g]")
-        .CHECK_OUTPUT((kg500 += ton1), "2500[kg]")
-        .CHECK_THROWS(kg500 += hr2)
-        // TEST MASS UNTIS ADDITION UNARY OP (+..)
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_THROWS()
-
-        //<name> = <actual value>
-        //ton1 = 2ton , ton2=ton2 ,kg2000= 4000kg , kg500= 2500kg , g1000=2001000  ,g2000000
-        // TEST MASS UNTIS SUBSCTRACTION OP (-)
-        .CHECK_OUTPUT(ton1 - ton2, "0[ton]")
-        .CHECK_OUTPUT(g2000000 - PhysicalNumber(1998850, Unit::G), "1150[g]")
-        .CHECK_OUTPUT(kg2000 - ton2, "2000[kg]")
-        .CHECK_OUTPUT(kg2000 - PhysicalNumber(1000, Unit::G), "3999[kg]")
-        .CHECK_THROWS(ton2 - hr2)
-
-        //<name> = <actual value>
-        //ton1 = 2ton , ton2=ton 2 ,kg2000= 4000kg , kg500= 2500kg , g1000=2001000  ,g2000000 = 2000000
-        // TEST MASS UNTIS SUBSCTRACTIONEQ OP (-=)
-        .CHECK_OUTPUT((ton2 -= ton1), "0[ton]")
-        .CHECK_OUTPUT((g2000000 -= PhysicalNumber(1998850, Unit::G)), "1150[g]")
-        .CHECK_OUTPUT((kg2000 -= ton2), "4000[kg]")
-        .CHECK_OUTPUT((kg2000 -= PhysicalNumber(1000, Unit::G)), "3999[kg]")
-        .CHECK_THROWS(ton2 -= hr2)
-
-        //<name> = <actual value>
-        //ton2= 0 ton , ton1 = 2 ton, kg2000 = 3000 ,kg500 =2500 , g200000=2000000, g1000=1000
-        // TEST MASS UNTIS SUBSCTRACTION UNARY OP (-..)
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_OUTPUT(,"[]")
-        // .CHECK_THROWS()
-
-        //<name>=<actual value>
-        ////ton2= 0 ton , ton1 = 2 ton, kg2000 = 3000 ,kg500 =2500 , g200000=2000000, g1000=1000
-        // TEST MASS UNTIS POSTFIX INCREMENT (..++)
-        .CHECK_OUTPUT(kg2000++, "3999[kg]")
-        .CHECK_OUTPUT(kg2000, "4000[kg]")
-        .CHECK_OUTPUT(ton1++, "2[ton]")
-        .CHECK_OUTPUT(ton1, "3[ton]")
-        .CHECK_OUTPUT(g1000++, "1150[g]")
-        .CHECK_OUTPUT(g1000, "1151[g]")
-        //.CHECK_OUTPUT(kg500++++++++,"2500[kg]")
-        //.CHECK_OUTPUT(ton2++++++++++,"0[ton]")
-
-        //<name> = <actual value>
-        //ton2 = 5 ton , ton1 =3 ton ,kg2000= 3001 kg ,kg500 = 2504 kg , g1000= 1001 g ,g2000000=2000000
-        // TEST MASS UNTIS PREFIX INCREMENT (++..)
-        .CHECK_OUTPUT(++kg2000, "4001[kg]")
-        .CHECK_OUTPUT(kg2000, "4001[kg]")
-        .CHECK_OUTPUT(++ton1, "4[ton]")
-        .CHECK_OUTPUT(++g1000, "1152[g]")
-        //.CHECK_OUTPUT(++++++++kg500,"2508[kg]")
-        //.CHECK_OUTPUT(++++++++++ton2,"10[ton]")
-
-        ////////////////////////////////////////
-        // OTHER RANDOM (?) TESTS WITH NO PRACTICAL USE //
-        .CHECK_EQUAL((++km3)++,PhysicalNumber(4,Unit::KM))
-        .CHECK_EQUAL(km3,PhysicalNumber(5,Unit::KM)) // km3 = 5[km]
-        //.CHECK_EQUAL(++(++((km3)++)),PhysicalNumber(7,Unit::KM))
-        .CHECK_OK(istringstream("344.5[g]") >> a)
-        .CHECK_OUTPUT((a += PhysicalNumber(1, Unit::KG)), "1344.5[g]")
-        .CHECK_OK(istringstream("65[sec]") >> a)
-        .CHECK_OUTPUT(a, "65[sec]")
-        .CHECK_THROWS(istringstream("100[sec]") >> a)
-        .CHECK_THROWS(istringstream("32[sec]") >> a)
-        .CHECK_THROWS(istringstream("654.54[sec]") >> a)
-        .CHECK_THROWS(istringstream("22.54[sec]") >> a)
-        .CHECK_THROWS(istringstream("55sec") >> a)
-        .CHECK_THROWS(istringstream("sec55[sec]") >> a)
-        .CHECK_EQUAL(PhysicalNumber(320000, Unit::CM),PhysicalNumber(3.2, Unit::KM))
-        .CHECK_OK(istringstream("999[g]") >> a)
-        .CHECK_OUTPUT(a, "999[g]")
-        .CHECK_EQUAL(a==PhysicalNumber(998, Unit::G), false)
-        .CHECK_EQUAL(a , PhysicalNumber((999.0/1000.0),Unit::KG))
-        .CHECK_OK(istringstream("53.1[g]") >> a)
-        .CHECK_OUTPUT(a, "53.1[g]")
-        .CHECK_OK(istringstream("0.25[ton]") >> a)
-        .CHECK_EQUAL(a, PhysicalNumber(250, Unit::KG))        
-        .CHECK_OK(istringstream("32[hour]") >> a)
-        .CHECK_OUTPUT(a, "32[hour]")
-        .CHECK_EQUAL(a==PhysicalNumber(32, Unit::HOUR), true)
-        .CHECK_EQUAL(a==PhysicalNumber(33, Unit::HOUR), false)
-        .CHECK_EQUAL(a==PhysicalNumber((32*60), Unit::MIN), true)
-        .CHECK_EQUAL(a==PhysicalNumber((32*60*60), Unit::SEC), true)
-        .CHECK_OK(istringstream("2[hour]") >> a)
-        .CHECK_OUTPUT(a, "2[hour]")
-        .CHECK_EQUAL(a, PhysicalNumber(120, Unit::MIN))
-        .CHECK_EQUAL(a, PhysicalNumber(2, Unit::HOUR))
-        .CHECK_OK(istringstream("120[min]") >> a)
-        .CHECK_OUTPUT(a, "120[min]")
-        .CHECK_EQUAL(a, PhysicalNumber(120, Unit::MIN))
-        .CHECK_EQUAL(a, PhysicalNumber(2, Unit::HOUR))
-
-        ////////////////////////////////////////
-        .setname("...")
-
-        .print(cout, /*show_grade=*/false);
-
+    .setname("Basic output")
+    .CHECK_OUTPUT(a, "2[km]")
+    .CHECK_OUTPUT(b, "300[m]")
+
+    .setname("Compatible dimensions")
+    .CHECK_OUTPUT(b+a, "2300[m]")
+    .CHECK_OUTPUT((a+=b), "2.3[km]")
+    .CHECK_OUTPUT(a, "2.3[km]")
+    .CHECK_OUTPUT(a+a, "4.6[km]")
+    .CHECK_OUTPUT(b-b, "0[m]")
+    .CHECK_OUTPUT(c, "2[hour]")
+    .CHECK_OUTPUT(d, "30[min]")
+    .CHECK_OUTPUT(d+c, "150[min]")
+
+    .setname("Incompatible dimensions")
+    .CHECK_THROWS(a+c)
+    .CHECK_THROWS(a+d)
+    .CHECK_THROWS(b+c)
+    .CHECK_THROWS(b+d)
+
+    .setname("Basic input")
+    .CHECK_OK(istringstream("700[kg]") >> a)
+    .CHECK_OUTPUT((a += PhysicalNumber(1, Unit::TON)), "1700[kg]")
+
+    // YOUR TESTS - INSERT AS MANY AS YOU WANT
+   
+      .setname("Basic output")
+      .CHECK_OUTPUT(aa, "2[ton]")
+      .CHECK_OUTPUT(bb, "2000[kg]")
+      .CHECK_OUTPUT(cc, "2[ton]")
+      .CHECK_OUTPUT(dd, "20000[g]")
+      .CHECK_OUTPUT(aaa, "2[hour]")
+      .CHECK_OUTPUT(bbb, "120[min]")
+      .CHECK_OUTPUT(ccc, "2[hour]")
+      .CHECK_OUTPUT(ddd, "360[sec]")
+      .CHECK_OUTPUT(aaaa, "1[km]")
+      .CHECK_OUTPUT(bbbb, "1000[m]")
+      .CHECK_OUTPUT(cccc, "2[km]")
+      .CHECK_OUTPUT(dddd, "100000[cm]")
+      
+    .setname("Operator '+' binary ")
+    .CHECK_OUTPUT(aa+aa, "4[ton]")
+    .CHECK_OUTPUT(aa+bb, "4[ton]")
+    .CHECK_OUTPUT(bb+dd, "2020[kg]")
+    .CHECK_OUTPUT(aaa+bbb, "4[hour]")
+    .CHECK_OUTPUT(bbb+aaa, "240[min]")
+    .CHECK_OUTPUT(aaa+ccc, "4[hour]")
+    .CHECK_OUTPUT(ccc+ddd, "2.1[hour]") 
+    .CHECK_OUTPUT(ddd+aaa, "7560[sec]")
+    .CHECK_OUTPUT(aaaa+bbbb, "2[km]") 
+    .CHECK_OUTPUT(bbbb+aaaa, "2000[m]") 
+    .CHECK_OUTPUT(cccc+dddd, "3[km]")
+    .CHECK_OUTPUT(dddd+cccc, "300000[cm]") 
+
+    .setname("Operator '-' binary ")
+    .CHECK_OUTPUT(aa-aa, "0[ton]")
+    .CHECK_OUTPUT(aa-bb, "0[ton]")
+    .CHECK_OUTPUT(bb-dd, "1980[kg]")
+    .CHECK_OUTPUT(aaa-bbb, "0[hour]") 
+    .CHECK_OUTPUT(bbb-aaa, "0[min]")
+    .CHECK_OUTPUT(aaa-ccc, "0[hour]")
+    .CHECK_OUTPUT(ccc-ddd, "1.9[hour]")
+    .CHECK_OUTPUT(aaaa-bbbb, "0[km]") 
+    .CHECK_OUTPUT(bbbb-aaaa, "0[m]") 
+    .CHECK_OUTPUT(cccc-dddd, "1[km]")
+    
+    .setname("Operator '+=' binary ")
+    .CHECK_OUTPUT((aa+=aa), "4[ton]")
+    .CHECK_OUTPUT((aa+=bb), "6[ton]")
+    .CHECK_OUTPUT((bb+=dd), "2020[kg]")
+    .CHECK_OUTPUT((aaa+=bbb), "4[hour]")
+    .CHECK_OUTPUT((bbb+=aaa), "360[min]")
+    .CHECK_OUTPUT((aaa+=ccc), "6[hour]")
+    .CHECK_OUTPUT((ccc+=ddd), "2.1[hour]") 
+
+    .setname("Operator '-=' binary ")
+    .CHECK_OUTPUT((aa-=bb), "3.98[ton]")
+    .CHECK_OUTPUT((aa-=bb), "1.96[ton]")
+    .CHECK_OUTPUT((bb-=dd), "2000[kg]")
+    .CHECK_OUTPUT((aaa-=ccc), "3.9[hour]")
+    .CHECK_OUTPUT((aaa-=ccc), "1.8[hour]")
+    .CHECK_OUTPUT((ccc-=ddd), "2[hour]") 
+
+    .setname("Operator '+' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa+bbb)
+    .CHECK_THROWS(bbbb+cc)
+    .CHECK_THROWS(cccc+aa)
+    .CHECK_THROWS(ddd+cc)
+
+    .setname("Operator '-' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa-bbb)
+    .CHECK_THROWS(bbbb-cc)
+    .CHECK_THROWS(cccc-aa)
+    .CHECK_THROWS(ddd-cc)
+
+    .setname("Operator '+=' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa+=bbb)
+    .CHECK_THROWS(bbbb+=cc)
+    .CHECK_THROWS(cccc+=aa)
+    .CHECK_THROWS(ddd+=cc)
+
+    .setname("Operator '-=' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa -= bbb)
+    .CHECK_THROWS(bbbb -= cc)
+    .CHECK_THROWS(cccc -= aa)
+    .CHECK_THROWS(ddd -= cc)
+
+    ////////////////Booolean operators//////////
+    .setname("Operator '==' binary - Compatible dimensions")
+    .CHECK_EQUAL(aa==aa,true)
+    .CHECK_EQUAL(ddd==PhysicalNumber(360,Unit::SEC),true)
+    .CHECK_EQUAL(bbb==bbb,true)
+    .CHECK_EQUAL(dddd==PhysicalNumber(100000,Unit::CM),true)
+    
+    .setname("Operator '!=' binary - Compatible dimensions")
+    .CHECK_EQUAL(aa != dd,true)
+    .CHECK_EQUAL(aa != PhysicalNumber(1,Unit::TON),true)
+    .CHECK_EQUAL(ddd != PhysicalNumber(36,Unit::SEC),true)
+    .CHECK_EQUAL(bbb != ccc,true)
+    .CHECK_EQUAL(dddd != PhysicalNumber(100,Unit::CM),true)
+
+    .setname("Operator '<' binary")
+    .CHECK_EQUAL(aa < dd,false)
+    .CHECK_EQUAL(aa < PhysicalNumber(90,Unit::TON),true)
+    .CHECK_EQUAL(ddd < PhysicalNumber(3500,Unit::SEC),true)
+    .CHECK_EQUAL(aaa < ddd ,false)
+    .CHECK_EQUAL(dddd < PhysicalNumber(1000000,Unit::CM),true)
+
+    .setname("Operator '<=' binary")
+    .CHECK_EQUAL(aa <= aa,true)
+    .CHECK_EQUAL(aa <= PhysicalNumber(9,Unit::TON),true)
+    .CHECK_EQUAL(ddd <= PhysicalNumber(36,Unit::SEC),false)
+    .CHECK_EQUAL(ddd <= ddd ,true)
+    .CHECK_EQUAL(dddd <= PhysicalNumber(1000000,Unit::CM),true)
+
+    .setname("Operator '>=' binary")
+    .CHECK_EQUAL(aa >= aa,true)
+    .CHECK_EQUAL(aa >= PhysicalNumber(9,Unit::TON),false)
+    .CHECK_EQUAL(ddd >= PhysicalNumber(36,Unit::SEC),true)
+    .CHECK_EQUAL(ddd >= ddd ,true)
+    .CHECK_EQUAL(dddd >= PhysicalNumber(1000000,Unit::CM),false)
+    
+    .setname("Operator '>=' binary")
+    .CHECK_EQUAL(aa >= aa,true)
+    .CHECK_EQUAL(aa >= PhysicalNumber(9,Unit::TON),false)
+    .CHECK_EQUAL(ddd >= PhysicalNumber(36,Unit::SEC),true)
+    .CHECK_EQUAL(ddd >= ddd ,true)
+    .CHECK_EQUAL(dddd >= PhysicalNumber(1000000,Unit::CM),false)
+
+    .setname("Operator '<' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa < bbb)
+    .CHECK_THROWS(bbbb < cc)
+    .CHECK_THROWS(cccc < aa)
+    .CHECK_THROWS(ddd < cc)
+
+    .setname("Operator '>' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa > bbb)
+    .CHECK_THROWS(bbbb > cc)
+    .CHECK_THROWS(cccc > aa)
+    .CHECK_THROWS(ddd > cc)
+
+    .setname("Operator '<=' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa <= bbb)
+    .CHECK_THROWS(bbbb <= cc)
+    .CHECK_THROWS(cccc <= aa)
+    .CHECK_THROWS(ddd <= cc)
+
+    .setname("Operator '>=' binary - Incompatible dimensions")
+    .CHECK_THROWS(aa <= bbb)
+    .CHECK_THROWS(bbbb <= cc)
+    .CHECK_THROWS(cccc <= aa)
+    .CHECK_THROWS(ddd <= cc)
+
+    .setname("Operator '++'")
+    .CHECK_OUTPUT(bb++,"2000[kg]")
+    .CHECK_OUTPUT(cc++,"2[ton]")
+    .CHECK_OUTPUT(dd++,"20000[g]")
+    .CHECK_OUTPUT(bbb--,"360[min]")
+    .CHECK_OUTPUT(ccc--,"2[hour]")
+    .CHECK_OUTPUT(ddd--,"360[sec]")
+    .CHECK_OUTPUT(++aaaa,"2[km]")
+    .CHECK_OUTPUT(++bbbb,"1001[m]")
+    .CHECK_OUTPUT(++cccc,"3[km]")
+    .CHECK_OUTPUT(++dddd,"100001[cm]")
+    .CHECK_OUTPUT(--a,"1699[kg]")
+    .CHECK_OUTPUT(--bb,"2000[kg]")
+    .CHECK_OUTPUT(--dddd,"100000[cm]")
+
+    .print(cout, /*show_grade=*/false);
     grade = testcase.grade();
-  }
-  else
-  {
+    } else {
+      testcase.print_signal(signal);
+      grade = 0;
+    }
+    cout <<  "*** Grade: " << grade << " ***" << endl;
+    return grade;
 
-    testcase.print_signal(signal);
-
-    grade = 0;
-  }
-
-  cout << "*** Grade: " << grade << " ***" << endl;
-
-  return grade;
 }
