@@ -28,24 +28,24 @@ double getValue() const{
 }
 
 
-PhysicalNumber operator+ (const PhysicalNumber& PHnum )const;
-PhysicalNumber operator- (const PhysicalNumber& PHnum )const;
+PhysicalNumber operator+ (const PhysicalNumber& other )const;
+PhysicalNumber operator- (const PhysicalNumber& other )const;
 
 //unery operators
 PhysicalNumber operator-();
 PhysicalNumber operator+() const;
 
- PhysicalNumber& operator-= (const PhysicalNumber& PHnum );
- PhysicalNumber& operator+= (const PhysicalNumber& PHnum );
+ PhysicalNumber& operator-= (const PhysicalNumber& other );
+ PhysicalNumber& operator+= (const PhysicalNumber& other );
 
 
 //compare operators
-bool operator!= ( const PhysicalNumber& PHnum);
-bool operator==(const PhysicalNumber& PHnum);
-bool operator<=(const PhysicalNumber& PHnum);
-bool operator>=(const PhysicalNumber& PHnum);
-bool operator>(const PhysicalNumber& PHnum);
-bool operator<(const PhysicalNumber& PHnum);
+bool operator!= ( const PhysicalNumber& other);
+bool operator==(const PhysicalNumber& other);
+bool operator<=(const PhysicalNumber& other);
+bool operator>=(const PhysicalNumber& other);
+bool operator>(const PhysicalNumber& other);
+bool operator<(const PhysicalNumber& other);
 
 PhysicalNumber& operator++ ();
 PhysicalNumber& operator-- ();
