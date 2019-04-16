@@ -8,12 +8,12 @@ using namespace std;
 //////////////////////constructor//////////////////////
 //constructor
 PhysicalNumber::PhysicalNumber (double a,Unit unit){
-	this->num=a;
+	this->value=a;
 	this->unit=unit;
 }
 //copy constructor
 PhysicalNumber::PhysicalNumber (const PhysicalNumber& obj){
-	this->num=obj.num;
+	this->value=obj.value;
 	this->unit=obj.unit;
 }
 
@@ -44,26 +44,26 @@ void PhysicalNumber::convDis (int cases, PhysicalNumber& other) const
     {
         case 0://if this is CM
             if((int)other.unit == 3)// other type is M
-                other.num = (other.num*100);
+                other.value = (other.value*100);
             if((int)other.unit == 6)// other type is KM
             {
-                other.num = (other.num*100000);
+                other.value = (other.value*100000);
             }
             break;
         case 3://if this is M
             if((int)other.unit== 0){
-			    other.num = (other.num/100); //other is CM
+			    other.value = (other.value/100); //other is CM
 		    }
 		    if((int)other.unit== 6){
-			    other.num = (other.num*1000); //other is KM
+			    other.value = (other.value*1000); //other is KM
 		    }
         break; 
         
         case 6://if this is KM
             if((int)other.unit == 0) // other CM
-                other.num = (other.num/(100000));
+                other.value = (other.value/(100000));
             if((int)other.unit == 3){ // other M
-                other.num = (other.num/1000);
+                other.value = (other.value/1000);
             }
     }
 }
@@ -74,10 +74,10 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
     {
         case 1://sec
             if((int)other.unit == 4)//MIN
-                other.num = (other.num*60);
+                other.value = (other.value*60);
             if((int)other.unit == 7)//HOUR
             {
-                other.num = (other.num*(60*60));
+                other.value = (other.value*(60*60));
             }
             if((int)other.unit == 1)
             {
@@ -85,11 +85,13 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
             }
             break;
         case 4://MIN
-            if((int)other.unit == 1){//SEC
-                other.num = (other.num*60);
+            if((int)other.unit == 1)
+            {//SEC
+                other.value = (other.value*60);
             }
-            if((int)other.unit == 7){//HOUR
-                other.num = (other.num*60);
+            if((int)other.unit == 7)
+            {//HOUR
+                other.value = (other.value*60);
             }
             if((int)other.unit == 4)
             {
@@ -98,9 +100,10 @@ void PhysicalNumber::convTime(int cases, PhysicalNumber& other) const
             
         case 7://HOUR
             if((int)other.unit == 1)//SEC
-                other.num = (other.num/(60*60));
-            if((int)other.unit == 4){//MIN
-                other.num = (other.num/60);
+                other.value = (other.value/(60*60));
+            if((int)other.unit == 4)
+            {//MIN
+                other.value = (other.value/60);
             }
             if((int)other.unit == 7)
             {
@@ -115,9 +118,9 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
     {
         case 2://G
             if((int)other.unit == 5)//KG
-                other.num = (other.num*1000);
+                other.value = (other.value*1000);
             if((int)other.unit == 8){//TON
-                other.num = (other.num*1000*1000);
+                other.value = (other.value*1000*1000);
             }
             if((int)other.unit == 2)
             {
@@ -126,9 +129,9 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
             break;
         case 5://KG
             if((int)other.unit == 2)//G
-                other.num = (other.num*(1000));
+                other.value = (other.value*(1000));
             if((int)other.unit == 8){//TON
-                other.num = (other.num*1000);
+                other.value = (other.value*1000);
             }
             if((int)other.unit == 5)
             {
@@ -137,9 +140,9 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
  
         case 8://TON
             if((int)other.unit == 2)//G
-                other.num = (other.num/(1000*1000));
+                other.value = (other.value/(1000*1000));
             if((int)other.unit == 5){//KG
-                other.num = (other.num/1000);
+                other.value = (other.value/1000);
             }
             if((int)other.unit == 8)
             {
@@ -148,7 +151,7 @@ void PhysicalNumber::convWig(int cases, PhysicalNumber& other) const
             
     }
 }
-/////////////////////////////////operators///////////////////////////////////////
+///////////////////////////////// '+' operators///////////////////////////////////////
 PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const
 {
     if((int)this->unit % 3 != (int)other.unit % 3)
@@ -157,8 +160,8 @@ PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber& other )const
     }
 
     PhysicalNumber p1(other);
-    this->convertByType(p1);
-    return PhysicalNumber(this->num+(p1.num),this->unit);
+    convertByType(p1);
+    return PhysicalNumber(this->value+(p1.value),this->unit);
 }
 
 PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other )
@@ -170,15 +173,15 @@ PhysicalNumber& PhysicalNumber::operator+= (const PhysicalNumber& other )
 
     PhysicalNumber p1(other);
     this->convertByType(p1); 
-    this->num = this->num + p1.num;
+    this->value = this->value + p1.value;
     return *this;
 }
 
 PhysicalNumber PhysicalNumber::operator+() const 
 {
-    return PhysicalNumber((this->num),this->unit);
+    return PhysicalNumber((this->value),this->unit);
 }
-//////////////////////// - operators ///////////////////////////////////////////
+//////////////////////// '-' operators ///////////////////////////////////////////
 PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const
 {
     if((int)this->unit % 3 != (int)other.unit % 3)
@@ -188,7 +191,7 @@ PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber& other )const
     
     PhysicalNumber p1(other);
     this->convertByType(p1); 
-    return PhysicalNumber(this->num-(p1.num),this->unit);  
+    return PhysicalNumber(this->value-(p1.value),this->unit);  
 }
 PhysicalNumber& PhysicalNumber::operator-= (const PhysicalNumber& other )
 {
@@ -199,13 +202,13 @@ PhysicalNumber& PhysicalNumber::operator-= (const PhysicalNumber& other )
     
     PhysicalNumber p1(other);
     this->convertByType(p1); 
-     this->num = this->num-p1.num;
+     this->value = this->value-p1.value;
     return *this;
 }
 
-PhysicalNumber PhysicalNumber::operator-()
+PhysicalNumber PhysicalNumber::operator-() const
 {
-    return PhysicalNumber(-1*(this->num),this->unit);
+    return PhysicalNumber(-1*(this->value),this->unit);
 }
 
 /////////////////////////////////compare operators/////////////////////////////////////////////////
@@ -218,7 +221,7 @@ bool PhysicalNumber::operator!= ( const PhysicalNumber& other)
 
     PhysicalNumber p1(other);
     this->convertByType(p1);
-    if(this->num != p1.num)
+    if(this->value != p1.value)
         return true;
     return false;
 }
@@ -232,7 +235,7 @@ bool PhysicalNumber::operator== (const PhysicalNumber& other)
 
     PhysicalNumber p1(other);
     this->convertByType(p1);
-    if(this->num == p1.num)
+    if(this->value == p1.value)
         return true;
     return false;
 }
@@ -245,7 +248,7 @@ bool PhysicalNumber::operator<= (const PhysicalNumber& other)
     }
     PhysicalNumber p1(other);
     this->convertByType(p1);
-    if(this->num <= p1.num)
+    if(this->value <= p1.value)
         return true;
     return false;
 }
@@ -259,7 +262,7 @@ bool PhysicalNumber::operator>= (const PhysicalNumber& other)
 
      PhysicalNumber p1(other);
     this->convertByType(p1);
-    if(this->num >= p1.num)
+    if(this->value >= p1.value)
         return true;
     return false;
 }
@@ -272,52 +275,54 @@ bool PhysicalNumber::operator> (const PhysicalNumber& other)
     }
     PhysicalNumber p1(other);
     this->convertByType(p1);
-    if(this->num > p1.num)
+    if(this->value > p1.value)
         return true;
     return false;
 }
 
 bool PhysicalNumber::operator< (const PhysicalNumber& other)
 {
+    
     if((int)this->unit % 3 != (int)other.unit % 3)//cant do the operator on diffrent unit type
     {
         throw std::invalid_argument("Exception,they must be from the same type ");
     }
     PhysicalNumber p1(other);
     this->convertByType(p1);
-    if(this->num < p1.num)
+    if(this->value < p1.value)
         return true;
     return false;
 }
 
 PhysicalNumber& PhysicalNumber::operator++()
 {
-   this->num++;
+   this->value++;
    return *this;
 }
 PhysicalNumber& PhysicalNumber::operator--()
 {
-    this->num--;
+    this->value--;
     return *this;
 }
 const PhysicalNumber PhysicalNumber::operator++(int)
 {
    PhysicalNumber copy = *this;
-   this->num++;
+   this->value++;
    return copy;
 }
 const PhysicalNumber PhysicalNumber::operator--(int)
 {
     PhysicalNumber copy = *this;
-    this->num--;
+    this->value--;
     return copy;
 }
 
 ///////////////////////////friends functions:input && output ///////////////////////
 
+
 string find_which_type(const PhysicalNumber& obj)
 {
-    switch((int)(obj.getType()))
+    switch((int)(obj.unit))
     {
 		case 2: return "g";
 		break;
@@ -341,21 +346,21 @@ string find_which_type(const PhysicalNumber& obj)
 	return "";
 }
 
-ostream& ariel::operator<<(ostream& stream, const PhysicalNumber& obj)
+ostream& ariel::operator<<(ostream& stream,const PhysicalNumber& obj)
 {
-    stream<< obj.getValue() << "[" << find_which_type(obj) << "]";
+    stream << obj.value << "[" << find_which_type(obj) << "]";
     return stream;
 }
 
 istream& ariel::operator>> (istream& stream,PhysicalNumber& other)
 { //based on the 04-const-friend-operators folder in the complex.cpp file for the >> operator
     ios::pos_type startPosition = stream.tellg();
-    double num = -1111111;
+    double num = 0;
     string st = " ";
     stream >> num;
     stream >> st;
 
-    if(num == -1111111)
+    if(num < 0 )
     {
           auto errorState = stream.rdstate();
           stream.clear(); // clear error so seekg will work
@@ -366,7 +371,13 @@ istream& ariel::operator>> (istream& stream,PhysicalNumber& other)
     else
     {
         Unit unit;
-        if(st.compare("[g]") == 0)
+        if(st.compare("[sec]") == 0)
+            unit=Unit::SEC;
+        else if(st.compare("[min]") == 0)
+            unit=Unit::MIN;
+        else if(st.compare("[hour]") == 0)
+            unit=Unit::HOUR;
+        else if(st.compare("[g]") == 0)
             unit=Unit::G;
         else if(st.compare("[kg]") == 0)
             unit=Unit::KG;
@@ -378,12 +389,6 @@ istream& ariel::operator>> (istream& stream,PhysicalNumber& other)
             unit=Unit::M;
         else if(st.compare("[km]") == 0)
             unit=Unit::KM;
-        else if(st.compare("[sec]") == 0)
-            unit=Unit::SEC;
-        else if(st.compare("[min]") == 0)
-            unit=Unit::MIN;
-        else if(st.compare("[hour]") == 0)
-            unit=Unit::HOUR;
         else// if cant find any of the type should throw flag
         {
           auto errorState = stream.rdstate();
@@ -393,7 +398,7 @@ istream& ariel::operator>> (istream& stream,PhysicalNumber& other)
           return stream;
         }
     other.unit = unit;
-    other.num = num;
+    other.value = num;
     }
     return stream;
 }
